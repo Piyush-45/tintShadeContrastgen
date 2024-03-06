@@ -1,0 +1,49 @@
+
+.mainCont{
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.tintBoxesCont{
+  display: flex;
+  /* width: 90vw; */
+  align-items: center;
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  /* justify-content: space-; */
+
+}
+
+.tintBox{
+  border-right: 1px solid black;
+}
+.tintBox:hover{
+  transform: scaleX(1.2);
+  transition: all ease-in;
+}
+button{
+  display: none;
+}
+button{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  outline: none;
+  border: none;
+}
+.tintBox:hover button{
+  display: block;
+}
+.tintContainer{
+  width: 100%;
+
+  padding-inline: 10px;
+}
