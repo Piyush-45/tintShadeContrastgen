@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1{
+    color: #030637;
+}
+
+h2{
+    color: #512B81;
+}
+.hover:hover{
+ transform: scaleX(1.2);
+}

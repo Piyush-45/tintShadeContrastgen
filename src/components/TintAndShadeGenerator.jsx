@@ -1,101 +1,60 @@
-// TintAndShadeGenerator.jsx
-import { useState, useEffect } from 'react';
-import chroma from 'chroma-js';
-// import ColorPicker from './ColorPicker';
-import "./tint.css"
+import { useContext } from 'react';
+import { useColor } from '../context/ColorContext';
 import ColorPicker from './ColorPicker';
 import ContrastChecker from './ContrastChecker';
+import ButtonComponent from './Button';
+import swal from 'sweetalert';
+import AnalogousColors from './AnalogousColors';
+import Complimentary from './Complimentary';
 
 function TintAndShadeGenerator() {
-  const [baseColor, setBaseColor] = useState('#ff0000'); // Initial base color
-  const [levels, setLevels] = useState(5); // Number of tint and shade levels
-  const [tints, setTints] = useState([]);
-  const [shades, setShades] = useState([]);
-  useEffect(() => {
-    // Generate tints and shades when base color or levels change
+  const { baseColor, tints, shades, handleColorChange, analogousColors, complementaryColor } = useColor()
 
-    if (!baseColor || baseColor === '#') {
-      setTints(generateTints('#ff0000', levels));
-      setShades(generateShades('#ff0000', levels));
-    } else {
-      setTints(generateTints(baseColor, levels));
-      setShades(generateShades(baseColor, levels));
-    }
-  }, [baseColor, levels]);
-
-  // Function to generate tints based on the selected base color and levels
-  const generateTints = (color, levels) => {
-    if (!color) return []; 
-    return Array.from({ length: levels }, (_, i) =>
-      chroma(color).brighten((i + 1) / levels).hex()
-    );
-  };
-
-  // Function to generate shades based on the selected base color and levels
-  const generateShades = (color, levels) => {
-     if (!color) return []; 
-    return Array.from({ length: levels }, (_, i) =>
-      chroma(color).darken((i + 1) / levels).hex()
-    );
-  };
-
-  // Function to handle color change from color picker
-  const handleColorChange = (color) => {
-    // console.log("handleColorChange")
-    setBaseColor(color);
-  };
-
-  // Function to handle level change for tints and shades
-  const handleLevelChange = (e) => {
-    setLevels(parseInt(e.target.value));
-  };
   const copyToClipboard = (color) => {
     navigator.clipboard.writeText(color);
+    swal("Good job!", "color copied", "success");
   };
 
   return (
-    <div className='mainCont'>
+    <div className='p-16 flex flex-col items-center justify-center '>
+      <h1 className='text-4xl font-bold text-center'>ShadeSmith</h1>
+      <p className='text-center mt-4 text-2xl'>Blend Shades, Tints, and Magic</p>
       {/* Color Picker */}
       <ColorPicker selectedColor={baseColor} handleColorChange={handleColorChange} />
-
-      {/* Number of Levels Input */}
-      <label>
-        Number of Levels:
-        <input
-          type="number"
-          min="1"
-          value={levels}
-          onChange={handleLevelChange}
-        />
-      </label>
+      {/* Display Analogous Colors */}
 
       {/* Display Tints */}
-      <div className='tintContainer'>
-        <h2>Tints:</h2>
-        <div className="tintBoxesCont">
-        {tints.map((color, index) => (
-          <div key={index} className='tintBox' style={{ backgroundColor: color, width:'100px', minHeight:'100px', }}>
-            Tint {index + 1}
-            <button onClick={() => copyToClipboard(color)}>Copy</button>
-          </div>
-        ))}
+      <div className='mt-8'>
+        <h2 className='font-semibold text-2xl'>Tints:</h2>
+        <p className='text-xl font-semibold'>Tint refers to shades of a color as it's mixed with white.</p>
+        <div className="flex flex-row mt-4 gap-1/10">
+          {tints.map((color, index) => (
+            (index + 1) % 2 !== 0 ? (<div key={index} className='hover cursor-pointer  text-neutral-950 text-center pt-9' style={{ backgroundColor: color, width: '100px', minHeight: '100px', }} onClick={() => copyToClipboard(color)}>{color}
+              {/* <button onClick={() => copyToClipboard(color)} className='hidden hover:block'>Copy</button> */}
+            </div>) : null
+
+          ))}
         </div>
       </div>
-
       {/* Display Shades */}
-      <div className='tintContainer'>
-        <h2>Shades:</h2>
-        <div className="tintBoxesCont">
-        {shades.map((color, index) => (
-          <div key={index} className='tintBox' style={{ backgroundColor: color, width:'100px', minHeight:'100px', }}>
-            Tint {index + 1}
-            <button onClick={() => copyToClipboard(color)}>Copy</button>
-          </div>
-        ))}
+      <div className='mt-8'>
+        <h2 className='font-semibold text-2xl'>Shades:</h2>
+        <p className='text-xl font-semibold'>Shades of the color as the color is mixed with black.</p>
+        <div className="flex flex-row mt-4 ">
+          {shades.map((color, index) => (
+            (index + 1) % 2 !== 0 ? (<div key={index} className=' hover cursor-pointer text-white text-center pt-9' style={{ backgroundColor: color, width: '100px', minHeight: '100px', color: 'white ' }} onClick={() => copyToClipboard(color)}>
+              {color}
+            </div>) : null
+          ))}
         </div>
       </div>
-      <ContrastChecker />
-
+      <p className='font-medium text-xl mt-4'>Simply click any of the color shades to have the hex value copied to your clipboard.</p>
+      {/* <ButtonComponent id={baseColor} /> */}
+      <div className='w-full px-12'>
+        <AnalogousColors analogousColors={analogousColors} />
+        {/* <Complimentary complementaryColor={complementaryColor}/> */}
+      </div>
+      <ContrastChecker baseColor={baseColor} />
     </div>
   );
 }

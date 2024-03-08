@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContrastColorPicker from './ContrastColorPicker';
 import Preview from './Preview';
 
 const ContrastChecker = () => {
   const [text, setText] = useState('');
-  const [textColor, setTextColor] = useState('#000000');
-  const [bgColor, setBgColor] = useState('#ffffff');
+  const [textColor, setTextColor] = useState('#ffffff');
+  const [bgColor, setBgColor] = useState('#000000');
   const [contrastRatio, setContrastRatio] = useState(0);
   const [rating, setRating] = useState('');
-
+  
   // Function to calculate contrast ratio
   const calculateContrastRatio = (color1, color2) => {
     const getLuminance = (color) => {
@@ -42,6 +42,9 @@ const ContrastChecker = () => {
     }
   };
 
+  useEffect(() => {
+    updateContrast(); // Calculate contrast ratio and rating on component load
+  }, []);
   // Update contrast ratio and rating on color change
   const handleColorChange = () => {
     updateContrast();
@@ -54,26 +57,28 @@ const ContrastChecker = () => {
   };
 
   return (
-    <div className="contrast-checker">
-      <div className="inputs">
-        <div className="input-group">
-          <label htmlFor="textColor">Text Color:</label>
-          <input type="text" value={textColor} onChange={(e) => setTextColor(e.target.value)} />
+    <div className="mt-20">
+      <h1 className='text-4xl font-bold text-center mb-6'>Contrast Checker</h1>
+      <div className="flex space-x-32">
+        <div className="flex flex-row items-center text-center mb-4">
+          <label htmlFor="textColor" className='text-xl '>Text Color:</label>
+          <input type="text" value={textColor} className='w-24 text-xl  text-center ' onChange={(e) => setTextColor(e.target.value)} />
           <ContrastColorPicker value={textColor} onChange={(e) => { setTextColor(e.target.value); handleColorChange(); }} />
         </div>
-        <div className="input-group">
-          <label htmlFor="bgColor">Background Color:</label>
-          <input type="text" value={bgColor} onChange={(e) => setBgColor(e.target.value)} />
+        <div className="flex flex-row items-center text-center mb-4 ">
+          <label htmlFor="bgColor" className='text-xl '>Background Color:</label>
+          <input type="text" value={bgColor}  className='flex flex-row items-center text-center ' onChange={(e) => setBgColor(e.target.value)} />
           <ContrastColorPicker value={bgColor} onChange={(e) => { setBgColor(e.target.value); handleColorChange(); }} />
         </div>
       </div>
+      <div className='flex  flex-row gap-8 items-center mt-10 '>
       <div className="text-preview">
-        
         <Preview text={text} textColor={textColor} bgColor={bgColor} />
       </div>
       <div className="rating">
-        <div>Contrast Ratio: {contrastRatio}</div>
-        <div>Rating: {rating}</div>
+        <div className='text-xl font-mono font-bold'>Contrast Ratio: <span className='text-green-800'> {contrastRatio}</span></div>
+        <div className='text-xl font-mono font-bold'>Rating: {rating}</div>
+      </div>
       </div>
     </div>
   );

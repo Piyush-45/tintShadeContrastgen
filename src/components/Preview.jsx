@@ -1,6 +1,6 @@
 const Preview = ({ text, textColor, bgColor }) => {
     return (
-      <div style={{ color: textColor, backgroundColor: bgColor, height: '300px', width: '40vh', }} >
+      <div style={{ color: textColor, backgroundColor: bgColor, height: '300px', width: '60vh', }} >
         {/* {text} */}
   
         <p style={{ fontSize: '20px', padding: 10 }}>
