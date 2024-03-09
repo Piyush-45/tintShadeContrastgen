@@ -88,7 +88,7 @@ import { tint, shade } from 'polished';
 const ColorContext = createContext();
 
 const ColorProvider = ({ children }) => {
-  const [baseColor, setBaseColor] = useState('#ff0000');
+  const [baseColor, setBaseColor] = useState('#1b3ea7');
   const [levels, setLevels] = useState(20);
   const [tints, setTints] = useState([]);
   const [shades, setShades] = useState([]);
@@ -97,8 +97,8 @@ const ColorProvider = ({ children }) => {
 
   useEffect(() => {
     if (!baseColor || baseColor === '#') {
-      setTints(generateTints('#ff0000', levels));
-      setShades(generateShades('#ff0000', levels));
+      setTints(generateTints('#1b3ea7', levels));
+      setShades(generateShades('#1b3ea7', levels));
     } else {
       setTints(generateTints(baseColor, levels));
       setShades(generateShades(baseColor, levels));
